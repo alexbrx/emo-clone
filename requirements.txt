@@ -1,0 +1,94 @@
+absl-py==0.9.0
+astor==0.8.1
+attrs==19.3.0
+audioread==2.1.8
+backcall==0.2.0
+bleach==3.1.5
+certifi==2020.6.20
+cycler==0.10.0
+decorator==4.4.2
+defusedxml==0.6.0
+entrypoints==0.3
+future==0.18.2
+gast==0.2.2
+google-pasta==0.2.0
+grpcio==1.30.0
+h5py==2.10.0
+importlib-metadata @ file:///tmp/build/80754af9/importlib-metadata_1593446408836/work
+ipykernel==5.3.2
+ipython @ file:///tmp/build/80754af9/ipython_1593447368578/work
+ipython-genutils==0.2.0
+ipywidgets==7.5.1
+jedi @ file:///tmp/build/80754af9/jedi_1592841891421/work
+Jinja2==2.11.2
+joblib==0.16.0
+jsonschema @ file:///tmp/build/80754af9/jsonschema_1594363551272/work
+jupyter==1.0.0
+jupyter-client==6.1.6
+jupyter-console==6.1.0
+jupyter-core==4.6.3
+jupyter-http-over-ws==0.0.8
+Keras==2.3.1
+Keras-Applications==1.0.8
+Keras-Preprocessing==1.1.2
+kiwisolver==1.2.0
+librosa==0.6.1
+llvmlite==0.31.0
+Markdown==3.2.2
+MarkupSafe @ file:///tmp/build/80754af9/markupsafe_1594371495811/work
+matplotlib==3.2.2
+mistune @ file:///tmp/build/80754af9/mistune_1594373098390/work
+nbconvert @ file:///tmp/build/80754af9/nbconvert_1594376811065/work
+nbformat==5.0.7
+notebook==6.0.3
+numba==0.48.0
+numpy==1.19.0
+opt-einsum==3.2.1
+packaging==20.4
+pandas==1.0.5
+pandocfilters==1.4.2
+parso==0.7.0
+pexpect @ file:///tmp/build/80754af9/pexpect_1594383317248/work
+pickleshare @ file:///tmp/build/80754af9/pickleshare_1594384075987/work
+Pillow==7.2.0
+prometheus-client==0.8.0
+prompt-toolkit==3.0.5
+protobuf==3.12.2
+ptyprocess==0.6.0
+Pygments==2.6.1
+pyparsing==2.4.7
+pyrsistent==0.16.0
+pysptk==0.1.18
+python-dateutil==2.8.1
+pytz==2020.1
+PyYAML==5.3.1
+pyzmq==19.0.1
+qtconsole @ file:///tmp/build/80754af9/qtconsole_1592848611704/work
+QtPy==1.9.0
+resampy==0.2.2
+Resemblyzer==0.1.1.dev0
+scikit-learn==0.23.1
+scipy==1.5.1
+Send2Trash==1.5.0
+six==1.15.0
+tensorboard==1.15.0
+tensorboardX==2.1
+tensorflow==1.15.0
+tensorflow-estimator==1.15.1
+termcolor==1.1.0
+terminado==0.8.3
+testpath==0.4.4
+threadpoolctl==2.1.0
+torch==1.5.1+cu101
+torchaudio==0.5.1
+torchvision==0.6.1+cu101
+tornado==6.0.4
+traitlets==4.3.3
+typing==3.7.4.3
+wcwidth @ file:///tmp/build/80754af9/wcwidth_1593447189090/work
+webencodings==0.5.1
+webrtcvad==2.0.10
+Werkzeug==1.0.1
+widgetsnbextension==3.5.1
+wrapt==1.12.1
+zipp==3.1.0
