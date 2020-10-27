@@ -139,12 +139,8 @@ class MyCollator(object):
         for token in batch:
             aa, b, c, emo = token
             if len(aa) > self.max_len_seq:
-                len_crop = self.max_len_seq  # 1.5s ~ 3s
+                len_crop = self.max_len_seq
                 left = np.random.randint(0, len(aa) - len_crop)
-                # len_crop = np.random.randint(self.min_len_seq, self.max_len_seq+1, size=2) # 1.5s ~ 3s
-                # left = np.random.randint(0, len(aa)-len_crop, size=2)
-                # a = aa[left[0]:left[0]+len_crop[0], :]
-                # c = c[left[0]:left[0]+len_crop[0]]
                 a = aa[left : left + len_crop, :]
                 c = c[left : left + len_crop]
             else:
@@ -160,7 +156,6 @@ class MyCollator(object):
                 constant_values=-1e10,
             )
 
-            # new_batch.append( (a_pad, b, c_pad, len_crop[0]) )
             new_batch.append((a_pad, b, c_pad, len_crop, emo))
 
         batch = new_batch

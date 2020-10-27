@@ -139,6 +139,6 @@ if __name__ == "__main__":
     parser.add_argument("--dim_z", type=int, default=256)
     parser.add_argument("--dim_h", type=int, default=1024)
 
-    config = parser.parse_args()  # save to file
+    config = parser.parse_args()
     print(config)
     main(config)

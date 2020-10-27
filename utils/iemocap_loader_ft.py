@@ -42,27 +42,11 @@ class IEMOCAP(data.Dataset):
     def preprocess(self):
         """Preprocess the IEMOCAP evaluation file."""
 
-        # Collect information in a DataFrame
-        # if meta is None:
-        #     meta = pd.read_csv('/vol/bitbucket/apg416/SpeechSplit/assets/iemocap_meta.csv')
-
-        # #Remove very short utterances
-        # meta = meta[meta['length']>=1.5]
-
-        # #Merge excited and happy
-        # assert 'exc' not in self.selected_emos
-        # meta['emotion'] = meta['emotion'].replace({'exc':'hap'})
-
         # Retain only the chosen classes and encode them
         self.meta = self.meta.loc[self.meta["emotion"].isin(self.selected_emos)]
-        # meta['emotion'] = meta['emotion'].replace(self.emo2idx)
+
         self.meta["emotion"].replace(self.emo2idx, inplace=True)
-        # Split into train and test
-        # self.meta_train, self.meta_test = train_test_split(meta, test_size=0.1, random_state=1234)
-        #
-        # self.meta_train.reset_index(inplace=True)
-        # self.meta_test.reset_index(inplace=True)
-        # meta['session'] = meta['wav_file'].apply(lambda s : s[3:5])
+
         self.meta["session"] = self.meta["wav_file"].apply(lambda s: s[3:5])
 
         self.meta_train = self.meta[
@@ -102,7 +86,7 @@ class IEMOCAP(data.Dataset):
         path_spmel, path_raptf0, path_emb = meta.loc[
             index, ["path_spmel", "path_raptf0", "path_emb"]
         ]
-        # spk_id = meta.loc[index, 'spk_id']
+
         emo = meta.loc[index, "emotion"]
 
         melsp = np.load(path_spmel + ".npy")
@@ -133,12 +117,8 @@ class MyCollator(object):
         for token in batch:
             aa, b, c, emo = token
             if len(aa) > self.max_len_seq:
-                len_crop = self.max_len_seq  # 1.5s ~ 3s
+                len_crop = self.max_len_seq
                 left = np.random.randint(0, len(aa) - len_crop)
-                # len_crop = np.random.randint(self.min_len_seq, self.max_len_seq+1, size=2) # 1.5s ~ 3s
-                # left = np.random.randint(0, len(aa)-len_crop, size=2)
-                # a = aa[left[0]:left[0]+len_crop[0], :]
-                # c = c[left[0]:left[0]+len_crop[0]]
                 a = aa[left : left + len_crop, :]
                 c = c[left : left + len_crop]
             else:
@@ -154,7 +134,6 @@ class MyCollator(object):
                 constant_values=-1e10,
             )
 
-            # new_batch.append( (a_pad, b, c_pad, len_crop[0]) )
             new_batch.append((a_pad, b, c_pad, len_crop, emo))
 
         batch = new_batch
@@ -166,7 +145,7 @@ class MyCollator(object):
         len_org = torch.from_numpy(np.stack(d, axis=0))
         emo_org = torch.from_numpy(np.stack(e, axis=0))
 
-        return melsp, spk_emb, pitch, len_org  # , emo_org
+        return melsp, spk_emb, pitch, len_org
 
 
 def get_loader(

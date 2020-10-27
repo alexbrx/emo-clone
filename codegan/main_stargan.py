@@ -130,16 +130,6 @@ if __name__ == "__main__":
         default="/vol/bitbucket/apg416/project/codegan/experiments/results",
     )
 
-    # parser.add_argument('--log_dir', type=str, default=os.path.join('/vol/bitbucket/apg416/MSc/IEMOCAP/experiments', timestamp, 'logs'))
-    # parser.add_argument('--model_save_dir', type=str, default=os.path.join('/vol/bitbucket/apg416/MSc/IEMOCAP/experiments', timestamp, 'models'))
-    # parser.add_argument('--sample_dir', type=str, default=os.path.join('/vol/bitbucket/apg416/MSc/IEMOCAP/experiments', timestamp, 'samples'))
-    # parser.add_argument('--result_dir', type=str, default=os.path.join('/vol/bitbucket/apg416/MSc/IEMOCAP/experiments', timestamp, 'results'))
-
-    # parser.add_argument('--log_dir', type=str, default=os.path.join('/vol/bitbucket/apg416/MSc/IEMOCAP/experiments', 'trash', 'logs'))
-    # parser.add_argument('--model_save_dir', type=str, default=os.path.join('/vol/bitbucket/apg416/MSc/IEMOCAP/experiments', 'trash', 'models'))
-    # parser.add_argument('--sample_dir', type=str, default=os.path.join('/vol/bitbucket/apg416/MSc/IEMOCAP/experiments', 'trash', 'samples'))
-    # parser.add_argument('--result_dir', type=str, default=os.path.join('/vol/bitbucket/apg416/MSc/IEMOCAP/experiments', 'trash', 'results'))
-
     # Step size.
     parser.add_argument("--log_step", type=int, default=10)
     parser.add_argument("--sample_step", type=int, default=25000)

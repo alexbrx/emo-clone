@@ -15,7 +15,6 @@ class Discriminator(nn.Module):
         for i in range(n_h):
             layers.append(nn.Linear(dim_h, dim_h))
             layers.append(nn.LeakyReLU(0.02))
-        # layers.append(nn.Linear(dim_h, 1))
 
         self.main = nn.Sequential(*layers)
         self.src = nn.Linear(dim_h, 1)

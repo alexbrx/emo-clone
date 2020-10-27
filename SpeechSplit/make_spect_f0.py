@@ -3,7 +3,6 @@ import sys
 import pickle
 import numpy as np
 
-# import soundfile as sf
 from scipy import signal
 from librosa.filters import mel
 from numpy.random import RandomState
@@ -14,9 +13,9 @@ from utils import pySTFT
 
 import librosa
 
-# from resemblyzer import VoiceEncoder, preprocess_wav
+from resemblyzer import VoiceEncoder, preprocess_wav
 
-# encoder = VoiceEncoder()
+encoder = VoiceEncoder()
 
 mel_basis = mel(16000, 1024, fmin=90, fmax=7600, n_mels=80).T
 min_level = np.exp(-100 / 20 * np.log(10))
@@ -26,13 +25,10 @@ spk2gen = pickle.load(open("assets/spk2gen.pkl", "rb"))
 
 
 # Modify as needed
-# rootDir = 'assets/wavs'
-# targetDir_f0 = 'assets/raptf0'
-# targetDir = 'assets/spmel'
+
 rootDir = "assets/vctk_full"
 targetDir_f0 = "assets/vctk_full_raptf0"
 targetDir = "assets/vctk_full_spmel"
-# targetDir_emb = 'assets/emb'
 
 dirName, subdirList, _ = next(os.walk(rootDir))
 print("Found directory: %s" % dirName)
@@ -44,8 +40,8 @@ for subdir in sorted(subdirList):
         os.makedirs(os.path.join(targetDir, subdir))
     if not os.path.exists(os.path.join(targetDir_f0, subdir)):
         os.makedirs(os.path.join(targetDir_f0, subdir))
-    #    if not os.path.exists(os.path.join(targetDir_emb, subdir)):
-    #       os.makedirs(os.path.join(targetDir_emb, subdir))
+    if not os.path.exists(os.path.join(targetDir_emb, subdir)):
+        os.makedirs(os.path.join(targetDir_emb, subdir))
     _, _, fileList = next(os.walk(os.path.join(dirName, subdir)))
 
     if spk2gen[subdir] == "M":
@@ -69,9 +65,9 @@ for subdir in sorted(subdirList):
         y = signal.filtfilt(b, a, x)
         wav = y * 0.96 + (prng.rand(y.shape[0]) - 0.5) * 1e-06
 
-        # #compute speaker embedding
-        # uttr_emb = encoder.embed_utterance(preprocess_wav(wav, source_sr=16000))
-        # uttr_embs.append(uttr_emb)
+        # compute speaker embedding
+        uttr_emb = encoder.embed_utterance(preprocess_wav(wav, source_sr=16000))
+        uttr_embs.append(uttr_emb)
 
         # compute spectrogram
         D = pySTFT(wav).T
@@ -101,12 +97,18 @@ for subdir in sorted(subdirList):
             f0_norm.astype(np.float32),
             allow_pickle=False,
         )
-        # np.save(os.path.join(targetDir_emb, subdir, fileName[:-4]),
-        #         uttr_emb.astype(np.float32), allow_pickle=False)
+        np.save(
+            os.path.join(targetDir_emb, subdir, fileName[:-4]),
+            uttr_emb.astype(np.float32),
+            allow_pickle=False,
+        )
 
-    # spkr_emb = np.array(uttr_embs).mean(axis=0)
-    # np.save(os.path.join(targetDir_emb, subdir, subdir + '_avg'),
-    #             spkr_emb.astype(np.float32), allow_pickle=False)
+    spkr_emb = np.array(uttr_embs).mean(axis=0)
+    np.save(
+        os.path.join(targetDir_emb, subdir, subdir + "_avg"),
+        spkr_emb.astype(np.float32),
+        allow_pickle=False,
+    )
 
 # import os
 # import sys
