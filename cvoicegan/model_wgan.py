@@ -6,9 +6,10 @@ import numpy as np
 
 class Discriminator(nn.Module):
     """Discriminator network"""
+
     def __init__(self, dim_h=1024, n_h=1):
         super(Discriminator, self).__init__()
-        layers=[]
+        layers = []
         layers.append(nn.Linear(256, dim_h))
         layers.append(nn.LeakyReLU(0.02))
         for i in range(n_h):
@@ -26,13 +27,15 @@ class Discriminator(nn.Module):
         out_cls = self.cls(out)
         return out_src, out_cls
 
+
 class Generator(nn.Module):
     """Generator network"""
+
     def __init__(self, dim_z=64, dim_h=1024, n_h=1):
         super(Generator, self).__init__()
 
-        layers=[]
-        layers.append(nn.Linear(dim_z+2, dim_h))
+        layers = []
+        layers.append(nn.Linear(dim_z + 2, dim_h))
         layers.append(nn.LeakyReLU(0.02))
         for i in range(n_h):
             layers.append(nn.Linear(dim_h, dim_h))
@@ -51,5 +54,5 @@ class Generator(nn.Module):
     def forward(self, z, c):
         input = torch.cat([z, self.label2onehot(c).to(z.dtype).to(z.device)], dim=-1)
         x = torch.relu(self.main(input))
-        x = x / torch.norm(x, dim=1, keepdim=True) 
+        x = x / torch.norm(x, dim=1, keepdim=True)
         return x

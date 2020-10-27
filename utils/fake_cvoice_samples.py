@@ -8,7 +8,8 @@ import argparse
 import sys
 import matplotlib.pyplot as plt
 
-project_dir = '/vol/bitbucket/apg416/project/'
+project_dir = "/vol/bitbucket/apg416/project/"
+
 
 def main(config):
     n_voices = config.n_voices
@@ -17,30 +18,34 @@ def main(config):
     selected_emos = config.selected_emos
     save_spect = config.save_spect
 
-    assert n_voices%2 == 0
+    assert n_voices % 2 == 0
 
     ss_iter = 2800000
-    ss_path = os.path.join(project_dir, 'SpeechSplit/run_full/models/{}-G.ckpt'.format(ss_iter))
+    ss_path = os.path.join(
+        project_dir, "SpeechSplit/run_full/models/{}-G.ckpt".format(ss_iter)
+    )
     model = SpeechSplit(ss_path, freeze=True)
     model.cuda()
 
-    sys.path.insert(1, os.path.join(project_dir, 'waveglow'))
+    sys.path.insert(1, os.path.join(project_dir, "waveglow"))
     waveglow_iter = 128000
-    waveglow_path = os.path.join(project_dir, 'waveglow/checkpoints/waveglow_{}'.format(waveglow_iter))
-    waveglow = torch.load(waveglow_path)['model']
+    waveglow_path = os.path.join(
+        project_dir, "waveglow/checkpoints/waveglow_{}".format(waveglow_iter)
+    )
+    waveglow = torch.load(waveglow_path)["model"]
     waveglow = waveglow.remove_weightnorm(waveglow)
     waveglow = waveglow.cuda().eval()
-    
 
-    sys.path.insert(1, os.path.join(project_dir, 'cvoicegan'))
+    sys.path.insert(1, os.path.join(project_dir, "cvoicegan"))
     from model_wgan import Generator
+
     G = Generator(dim_z=256)
-    G_path = '/vol/bitbucket/apg416/project/cvoicegan/experiments/models/1000000-G.ckpt'
+    G_path = "/vol/bitbucket/apg416/project/cvoicegan/experiments/models/1000000-G.ckpt"
     G.load_state_dict(torch.load(G_path, map_location=lambda storage, loc: storage))
     G.cuda()
 
-    dirname_voicegan_wav = os.path.join(sample_dir, '1_VoiceGAN', 'wav')
-    dirname_neutral_wav = os.path.join(sample_dir, '2_FakeNeutral', 'wav')
+    dirname_voicegan_wav = os.path.join(sample_dir, "1_VoiceGAN", "wav")
+    dirname_neutral_wav = os.path.join(sample_dir, "2_FakeNeutral", "wav")
 
     if not os.path.exists(dirname_voicegan_wav):
         os.makedirs(dirname_voicegan_wav)
@@ -48,18 +53,19 @@ def main(config):
         os.makedirs(dirname_neutral_wav)
 
     if save_spect:
-        dirname_voicegan_mel = os.path.join(sample_dir, '1_VoiceGAN', 'mel')
-        dirname_neutral_mel = os.path.join(sample_dir, '2_FakeNeutral', 'mel')
+        dirname_voicegan_mel = os.path.join(sample_dir, "1_VoiceGAN", "mel")
+        dirname_neutral_mel = os.path.join(sample_dir, "2_FakeNeutral", "mel")
 
         if not os.path.exists(dirname_voicegan_mel):
             os.makedirs(dirname_voicegan_mel)
         if not os.path.exists(dirname_neutral_mel):
             os.makedirs(dirname_neutral_mel)
 
-
     for emo in selected_emos:
 
-        iemocap_loader = get_loader(selected_emos=[emo], mode='test', batch_size=n_samples)
+        iemocap_loader = get_loader(
+            selected_emos=[emo], mode="test", batch_size=n_samples
+        )
 
         x_real_org, emb_org, f0_org, len_org, emo_org = next(iter(iemocap_loader))
 
@@ -70,64 +76,98 @@ def main(config):
         C, emb_org, codes_x, codes_f0, codes_2 = model(x_real_org, emb_org, f0_org)
 
         batch_len = x_real_org.size(0)
-        z = torch.randn(batch_len*n_voices, 256).cuda()
+        z = torch.randn(batch_len * n_voices, 256).cuda()
 
-        emb_fake = G(z, torch.randperm(batch_len*n_voices)%2)
+        emb_fake = G(z, torch.randperm(batch_len * n_voices) % 2)
 
-        x_voice_list = [model.decode(C, emb_trg, codes_x, codes_f0, codes_2) for emb_trg in emb_fake.chunk(n_voices)]
-        x_neutral_list = [model.decode(C, emb_org, codes_x, codes_f0*1e-1, codes_2)]
+        x_voice_list = [
+            model.decode(C, emb_trg, codes_x, codes_f0, codes_2)
+            for emb_trg in emb_fake.chunk(n_voices)
+        ]
+        x_neutral_list = [model.decode(C, emb_org, codes_x, codes_f0 * 1e-1, codes_2)]
 
         for idx in range(x_real_org.size(0)):
 
-            #Save fake voice samples
-            path_wav = os.path.join(dirname_voicegan_wav, emo + str(idx) + '.wav')
+            # Save fake voice samples
+            path_wav = os.path.join(dirname_voicegan_wav, emo + str(idx) + ".wav")
 
             if save_spect:
-                path_mel = os.path.join(dirname_voicegan_mel, emo + str(idx) + '.png')
+                path_mel = os.path.join(dirname_voicegan_mel, emo + str(idx) + ".png")
 
             with torch.no_grad():
-                s = torch.zeros((10,80)).cuda()
-                x_cat = [x_real_org[idx,:len_org[idx],:], s]
+                s = torch.zeros((10, 80)).cuda()
+                x_cat = [x_real_org[idx, : len_org[idx], :], s]
                 for x_id in x_voice_list:
-                    x_cat += [x_id[idx,:len_org[idx],:], s]
+                    x_cat += [x_id[idx, : len_org[idx], :], s]
                 x_cat = torch.cat(x_cat[:-1], dim=0)
-                mel = x_cat.unsqueeze(0).transpose(2,1)
+                mel = x_cat.unsqueeze(0).transpose(2, 1)
                 waveform = waveglow.infer(mel, sigma=1).detach().cpu().numpy()
             write_wav(path_wav, waveform.T, sr=16000)
 
             if save_spect:
-                plt.imsave(path_mel, mel.squeeze(0).detach().cpu().numpy(), origin='lower', cmap='viridis')
+                plt.imsave(
+                    path_mel,
+                    mel.squeeze(0).detach().cpu().numpy(),
+                    origin="lower",
+                    cmap="viridis",
+                )
 
             del waveform, x_cat, mel
 
-            #Save fake neutral samples
-            path_wav = os.path.join(dirname_neutral_wav, emo + str(idx) + '.wav')
+            # Save fake neutral samples
+            path_wav = os.path.join(dirname_neutral_wav, emo + str(idx) + ".wav")
 
             if save_spect:
-                path_mel = os.path.join(dirname_neutral_mel, emo + str(idx) + '.png')
+                path_mel = os.path.join(dirname_neutral_mel, emo + str(idx) + ".png")
 
             with torch.no_grad():
-                s = torch.zeros((10,80)).cuda()
-                x_cat = [x_real_org[idx,:len_org[idx],:], s]
+                s = torch.zeros((10, 80)).cuda()
+                x_cat = [x_real_org[idx, : len_org[idx], :], s]
                 for x_id in x_neutral_list:
-                    x_cat += [x_id[idx,:len_org[idx],:], s]
+                    x_cat += [x_id[idx, : len_org[idx], :], s]
                 x_cat = torch.cat(x_cat[:-1], dim=0)
-                mel = x_cat.unsqueeze(0).transpose(2,1)
+                mel = x_cat.unsqueeze(0).transpose(2, 1)
                 waveform = waveglow.infer(mel, sigma=1).detach().cpu().numpy()
             write_wav(path_wav, waveform.T, sr=16000)
 
             if save_spect:
-                plt.imsave(path_mel, mel.squeeze(0).detach().cpu().numpy(), origin='lower', cmap='viridis')
+                plt.imsave(
+                    path_mel,
+                    mel.squeeze(0).detach().cpu().numpy(),
+                    origin="lower",
+                    cmap="viridis",
+                )
 
             del waveform, x_cat, mel
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--n_voices', type=int, default=4, help='number of generated voices, must be even')
-    parser.add_argument('--n_samples', type=int, default=10, help='number of samples per emotion')
-    parser.add_argument('--sample_dir', type=str, default='/vol/bitbucket/apg416/samples_ev', help='number of samples per emotion')
-    parser.add_argument('--selected_emos', '--list', nargs='+', help='selected emotions from IEMOCAP dataset', default=['ang', 'hap', 'sad', 'exc', 'fru'])
-    parser.add_argument('--save_spect', type=bool, default=False, help='perform voice swapping')
+    parser.add_argument(
+        "--n_voices",
+        type=int,
+        default=4,
+        help="number of generated voices, must be even",
+    )
+    parser.add_argument(
+        "--n_samples", type=int, default=10, help="number of samples per emotion"
+    )
+    parser.add_argument(
+        "--sample_dir",
+        type=str,
+        default="/vol/bitbucket/apg416/samples_ev",
+        help="number of samples per emotion",
+    )
+    parser.add_argument(
+        "--selected_emos",
+        "--list",
+        nargs="+",
+        help="selected emotions from IEMOCAP dataset",
+        default=["ang", "hap", "sad", "exc", "fru"],
+    )
+    parser.add_argument(
+        "--save_spect", type=bool, default=False, help="perform voice swapping"
+    )
 
     config = parser.parse_args()
     print(config)
