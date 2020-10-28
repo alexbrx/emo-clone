@@ -1,5 +1,19 @@
 ## Disentangled Representation Learning and Generative Adversarial Networks for Emotional Voice Cloning
 
+
+### Motivation
+* Given a recorded speech sample we would like to generate new samples havig some qualitative aspects like speaker's voice timbre, prosody, emotion etc. altered.
+* Naive application of state-of-the-art GANs for image style transfer doesn't deliver good results because these in general are not well suited to handle sequential data like speech.
+* 
+
+### Model Outline
+* [SpeechSplit](https://arxiv.org/abs/2004.11284) is an autoencoder neural network whcih decomposes speech into disentangled latent representations corresponding to four main perceptual aspects of speech i.e. pitch, rhythm, lexical content and speaker's voice timbre. 
+* The latents can be synthesized back into speech, hence it may be possible to perform style transfer by simply substituting some of the latents to synthesize altered samples.
+* Authors of SpeechSplit confirmed that this method works if the latents are substitued between parallel utterances (i.e. same linguistic content).
+* 
+
+
+### Datasets
 ### Dependencies
 See [requirements.txt](requirements.txt)
 
