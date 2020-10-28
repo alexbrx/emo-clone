@@ -1,8 +1,9 @@
-# Disentangled Representation Learning and Generative Adversarial Networks for Emotional Voice Cloning
+## Disentangled Representation Learning and Generative Adversarial Networks for Emotional Voice Cloning
 
-## Dependencies
+### Dependencies
 See [requirements.txt](requirements.txt)
 
+<!---
 ## Training WaveGlow
 Run the script below
 ```bash
@@ -45,7 +46,9 @@ The remaining files in waveglow/ and SpeechSplit/ were not changed.
 
 samples.tar.gz contains sample outputs from the model
 
+
 Original Repos:
 https://github.com/auspicious3000/SpeechSplit
 https://github.com/NVIDIA/waveglow
 https://github.com/yunjey/stargan (codegan/ and cvoicegan/ follow the general structure)
+--->
