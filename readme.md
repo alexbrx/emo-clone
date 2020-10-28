@@ -14,7 +14,8 @@
 * In other words, SpeechSplit autoencoder is used in our proposed model to simplify the structure of the data so that it can be more easily captured by a GAN.
 
 ### Model Overview
-* Mel-spectrograms and pitch contours are extracted from audio waveforms.
+1. Mel-spectrograms and pitch contours are extracted from audio waveforms.
+2. Speaker embeddings are extracted by Resemblyzer
 <img src="./jpg/diag.png" alt="diagram" width="700"/>
 
 ### Datasets
