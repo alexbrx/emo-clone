@@ -14,6 +14,9 @@
 * Put simply, in our proposed model SpeechSplit autoencoder is used to simplify the structure of the data so that it can be more easily captured by a GAN.
 
 ### Model Overview
+
+<img src="./jpg/diag.png" alt="diagram" width="700"/>
+
 ### Datasets
 ### Dependencies
 See [requirements.txt](requirements.txt)
