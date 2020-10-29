@@ -29,39 +29,40 @@
 * Common Voice
 * LJSpeech
 
-### Training 
-### Dependencies
-See [requirements.txt](requirements.txt)
+### Training
+* SpeechSplit is trained on VCTK and fine-tuned on IEMOCAP after which the weights become frozen.
+* Latent codes are computed by SpeechSplit for IEMOCAP samples on which CodeGAN is subsequently trained.
+* A dataset of speaker embeddings is created from Common Voice dataset on which VoiceGAN is subsequently trained.
+* WaveGlow vocoder is independently trained on LJSpech to convert mel-spectrograms into waveforms.
 
-<!---
-## Training WaveGlow
-Run the script below
+### Running Code
+
+#### Training WaveGlow
 ```bash
 python waveglow/train.py -c config.json
 ```
-## Training SpeechSplit
-Run the script below
+#### Training SpeechSplit
 ```bash
 python SpeechSplit/main.py
 ```
-## Training VoiceGAN
-Run the script below
+#### Training VoiceGAN
 ```bash
 python cvoicegan/main_wgan.py
 ```
-## Training CodeGAN
-Run the script below
+#### Training CodeGAN
 ```bash
 python codegan/main_stargan.py
 ```
-## Generate Samples
-Run the script below
+#### Generate Samples
 ```bash
 python utils/fake_cvoice_samples.py
 ```
 
-Original Repos:
-https://github.com/auspicious3000/SpeechSplit
-https://github.com/NVIDIA/waveglow
-https://github.com/yunjey/stargan
---->
+### Dependencies
+See [requirements.txt](requirements.txt)
+
+### Related Repos
+* [SpeechSplit](https://github.com/auspicious3000/SpeechSplit)
+* [Resemblyzer](https://github.com/resemble-ai/Resemblyzer)
+* [WaveGlow](https://github.com/NVIDIA/waveglow)
+* [StarGAN](https://github.com/yunjey/stargan)
