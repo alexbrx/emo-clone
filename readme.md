@@ -14,8 +14,12 @@
 * In other words, SpeechSplit autoencoder is used in our proposed model to simplify the structure of the data so that it can be more easily captured by a GAN.
 
 ### Model Overview
-1. Mel-spectrograms and pitch contours are extracted from audio waveforms.
-2. Speaker embeddings are extracted by Resemblyzer
+1. Mel-spectrogram and pitch contour are extracted from raw waveform.
+2. [Resemblyzer](https://github.com/resemble-ai/Resemblyzer) (an independent neural network trained on a speaker verification task) computes speaker embedding (i.e. a vector being a high-level representation of speaker's voice) from a mel-spectrogram.
+3.
+
+
+
 <img src="./jpg/diag.png" alt="diagram" width="700"/>
 
 ### Datasets
