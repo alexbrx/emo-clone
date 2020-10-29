@@ -35,6 +35,9 @@
 * A dataset of speaker embeddings is created from Common Voice dataset on which VoiceGAN is subsequently trained.
 * WaveGlow vocoder is independently trained on LJSpech to convert mel-spectrograms into waveforms.
 
+### Dependencies
+See [requirements.txt](requirements.txt)
+
 ### Running Code
 
 #### Training WaveGlow
@@ -58,8 +61,7 @@ python codegan/main_stargan.py
 python utils/fake_cvoice_samples.py
 ```
 
-### Dependencies
-See [requirements.txt](requirements.txt)
+
 
 ### Related Repos
 * [SpeechSplit](https://github.com/auspicious3000/SpeechSplit)
