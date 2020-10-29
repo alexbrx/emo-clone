@@ -2,7 +2,7 @@
 
 
 ### Motivation
-* Given a recorded speech sample we would like to generate new samples havig some qualitative aspects like speaker's voice timbre, prosody, emotion etc. altered.
+* Given a recorded speech sample we would like to generate new samples having some qualitative aspects like speaker's voice timbre, prosody, emotion etc. altered.
 * Naive application of state-of-the-art GANs for image style transfer doesn't deliver good results because these in general are not well suited to handle sequential data like speech.
 * The goal is to design an adversarially trained network capable of generating high quality speech samples in our setting.
 
