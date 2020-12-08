@@ -1,6 +1,8 @@
 wget -O pretrained.tar.gz https://www.dropbox.com/s/p26daq4uqm1yszs/pretrained.tar.gz?dl=0
+wget -O data.tar.gz https://www.dropbox.com/s/ogbhhssxg1or0lk/IEMOCAP_dataset.tar.gz?dl=0
 
 tar -xvf pretrained.tar.gz
+tar -xvf data.tar.gz 
 
 mkdir -p ./SpeechSplit/assets
 mv ./pretrained/iemocap_meta.csv ./SpeechSplit/assets
@@ -16,3 +18,4 @@ mv ./pretrained/1000000-G.ckpt ./cvoicegan/experiments/models
 
 rm -r pretrained
 rm pretrained.tar.gz
+rm data.tar.gz

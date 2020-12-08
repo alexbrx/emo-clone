@@ -161,17 +161,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--n_samples", type=int, default=10, help="number of samples per emotion"
     )
-    # "/vol/bitbucket/apg416/project/"
-    # parser.add_argument(
-    #     "--project_dir",
-    #     type=str,
-    #     help="project directory",
-    # )
-    # parser.add_argument(
-    #     "--sample_dir",
-    #     type=str,
-    #     help="sample directory",
-    # )
+    
     parser.add_argument(
         "--selected_emos",
         "--list",
