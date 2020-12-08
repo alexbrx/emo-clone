@@ -3,7 +3,10 @@ import torch.nn as nn
 import numpy as np
 import sys
 
-sys.path.insert(1, "/vol/bitbucket/apg416/project/SpeechSplit")
+import os
+project_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(1, os.path.join(project_dir, 'SpeechSplit'))
+# sys.path.insert(1, "/vol/bitbucket/apg416/project/SpeechSplit")
 from hparams import hparams
 from model import Generator_3 as Generator
 from utils import quantize_f0_torch

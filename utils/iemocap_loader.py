@@ -9,7 +9,9 @@ from sklearn.utils.class_weight import compute_class_weight
 import copy
 import sys
 
-sys.path.insert(1, "/vol/bitbucket/apg416/project/SpeechSplit")
+# sys.path.insert(1, "/vol/bitbucket/apg416/project/SpeechSplit")
+project_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(1, os.path.join(project_dir, 'SpeechSplit'))
 from hparams import hparams
 
 
@@ -32,9 +34,10 @@ class IEMOCAP(data.Dataset):
         self.class_weight = None
 
         if meta is None:
-            self.meta = pd.read_csv(
-                "/vol/bitbucket/apg416/project/SpeechSplit/assets/iemocap_meta.csv"
-            )
+            self.meta = pd.read_csv(os.path.join(project_dir, 'SpeechSplit/assets/iemocap_meta.csv'))
+            # self.meta = pd.read_csv(
+            #     "/vol/bitbucket/apg416/project/SpeechSplit/assets/iemocap_meta.csv"
+            # )
         else:
             self.meta = copy.deepcopy(meta)
 
@@ -109,9 +112,9 @@ class IEMOCAP(data.Dataset):
         # spk_id = meta.loc[index, 'spk_id']
         emo = meta.loc[index, "emotion"]
 
-        melsp = np.load(path_spmel + ".npy")
-        f0_org = np.load(path_raptf0 + ".npy")
-        emb_org = np.load(path_emb + ".npy")
+        melsp = np.load(path_spmel.replace("/vol/bitbucket/apg416/MSc/IEMOCAP", project_dir) + ".npy")
+        f0_org = np.load(path_raptf0.replace("/vol/bitbucket/apg416/MSc/IEMOCAP", project_dir) + ".npy")
+        emb_org = np.load(path_emb.replace("/vol/bitbucket/apg416/MSc/IEMOCAP", project_dir) + ".npy")
 
         return melsp, emb_org, f0_org, emo
 

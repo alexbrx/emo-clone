@@ -8,13 +8,19 @@ import argparse
 import sys
 import matplotlib.pyplot as plt
 
-project_dir = "/vol/bitbucket/apg416/project/"
+# project_dir = "/vol/bitbucket/apg416/project/"
 
 
 def main(config):
+    import os
+    project_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    # sys.path.insert(1, os.path.join(parent_dir, 'SpeechSplit'))
+
+    # project_dir = config.project_dir
     n_voices = config.n_voices
     n_samples = config.n_samples
-    sample_dir = config.sample_dir
+    # sample_dir = config.sample_dir
+    sample_dir = os.path.join(project_dir, 'samples')
     selected_emos = config.selected_emos
     save_spect = config.save_spect
 
@@ -40,7 +46,10 @@ def main(config):
     from model_wgan import Generator
 
     G = Generator(dim_z=256)
-    G_path = "/vol/bitbucket/apg416/project/cvoicegan/experiments/models/1000000-G.ckpt"
+    # G_path = "/vol/bitbucket/apg416/project/cvoicegan/experiments/models/1000000-G.ckpt"
+    G_path = os.path.join(
+        project_dir, "cvoicegan/experiments/models/{}-G.ckpt".format(1000000)
+    )
     G.load_state_dict(torch.load(G_path, map_location=lambda storage, loc: storage))
     G.cuda()
 
@@ -152,12 +161,17 @@ if __name__ == "__main__":
     parser.add_argument(
         "--n_samples", type=int, default=10, help="number of samples per emotion"
     )
-    parser.add_argument(
-        "--sample_dir",
-        type=str,
-        default="/vol/bitbucket/apg416/samples_ev",
-        help="number of samples per emotion",
-    )
+    # "/vol/bitbucket/apg416/project/"
+    # parser.add_argument(
+    #     "--project_dir",
+    #     type=str,
+    #     help="project directory",
+    # )
+    # parser.add_argument(
+    #     "--sample_dir",
+    #     type=str,
+    #     help="sample directory",
+    # )
     parser.add_argument(
         "--selected_emos",
         "--list",
