@@ -23,6 +23,18 @@
 
 <img src="./jpg/diag.png" alt="diagram" width="700"/>
 
+### Dependencies
+See [requirements.txt](requirements.txt)
+
+### Run Pretrained Model
+```
+git clone https://github.com/alexbrx/emo-clone.git
+cd emo-clone
+bash setup.sh
+pip install -r requirements.txt
+python utils/fake_cvoice_samples.py
+```
+
 ### Datasets
 * IEMOCAP
 * VCTK
@@ -35,10 +47,10 @@
 * A dataset of speaker embeddings is created from Common Voice dataset on which VoiceGAN is subsequently trained.
 * WaveGlow vocoder is independently trained on LJSpech to convert mel-spectrograms into waveforms.
 
-### Dependencies
-See [requirements.txt](requirements.txt)
 
-### Running Code
+
+
+<!--- ### Running Code
 
 #### Training WaveGlow
 ```bash
@@ -60,7 +72,7 @@ python codegan/main_stargan.py
 ```bash
 python utils/fake_cvoice_samples.py
 ```
-
+--->
 
 
 ### Related Repos
